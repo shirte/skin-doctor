@@ -1,0 +1,2 @@
+recursive-include skin_doctor/models *
+recursive-include skin_doctor/data *

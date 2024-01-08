@@ -1,0 +1,7 @@
+name: skin-doctor
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=3.7.9
+- rdkit=2020.09.1

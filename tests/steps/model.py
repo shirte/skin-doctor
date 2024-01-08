@@ -1,0 +1,44 @@
+from pytest_bdd import given, parsers
+from skin_doctor import SkinDoctorCPModel
+
+
+@given("the SkinDoctorCP model", target_fixture="model")
+def model():
+    return SkinDoctorCPModel()
+
+
+@given(parsers.parse("the input type is '{input_type}'"), target_fixture="input_type")
+def input_type(input_type):
+    return input_type
+
+
+@given(
+    parsers.parse("significance level 1 is {significance_level1:f}"),
+    target_fixture="significance_level1",
+)
+def significance_level1(significance_level1):
+    return significance_level1
+
+
+@given(
+    parsers.parse("significance level 2 is {significance_level2:f}"),
+    target_fixture="significance_level2",
+)
+def significance_level2(significance_level2):
+    return significance_level2
+
+
+@given(
+    parsers.parse("significance level 3 is {significance_level3:f}"),
+    target_fixture="significance_level3",
+)
+def significance_level3(significance_level3):
+    return significance_level3
+
+
+@given(
+    parsers.parse("significance level 4 is {significance_level4:f}"),
+    target_fixture="significance_level4",
+)
+def significance_level4(significance_level4):
+    return significance_level4
