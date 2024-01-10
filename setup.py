@@ -20,8 +20,11 @@ setup(
     maintainer="Johannes Kirchmair",
     maintainer_email="johannes.kirchmair@univie.ac.at",
     packages=find_packages(),
-    url="https://gitlab.phaidra.org/comp3d/skin-doctor",
+    url="https://github.com/molinfo-vienna/skin-doctor",
     long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    license="BSD 3-Clause License",
+    include_package_data=True,
     install_requires=rdkit_requirement
     + [
         "scikit_learn==0.23.2",
