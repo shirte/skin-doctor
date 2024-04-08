@@ -1,3 +1,4 @@
+@skin_doctor
 Feature: Consistent predictions
 
   Scenario Outline: Predictions stay consistent with previous versions
@@ -10,6 +11,7 @@ Feature: Consistent predictions
     And significance level 4 is <significance_level4>
     
     When the model generates predictions for the molecule representations
+    And The subset of the result where the input was not None is considered
     
     Then the result should be a pandas DataFrame
     And the value in column 'name' should be '<name>'

@@ -1,15 +1,11 @@
 from pytest_bdd import given, parsers
-from skin_doctor import SkinDoctorCPModel
 
 
 @given("the SkinDoctorCP model", target_fixture="model")
-def model():
+def skin_doctor_model():
+    from skin_doctor import SkinDoctorCPModel
+
     return SkinDoctorCPModel()
-
-
-@given(parsers.parse("the input type is '{input_type}'"), target_fixture="input_type")
-def input_type(input_type):
-    return input_type
 
 
 @given(

@@ -1,4 +1,4 @@
-name: skin-doctor
+name: skin_doctor
 channels:
 - conda-forge
 - defaults

@@ -1,4 +1,6 @@
+import gzip
 import os
+import time
 from copy import deepcopy
 from multiprocessing import Pool
 from typing import List
@@ -7,15 +9,22 @@ import numpy as np
 import pandas as pd
 from joblib import load
 from nerdd_module import AbstractModel
-from .preprocessing import SkinDoctorPreprocessingPipeline
 from rdkit.Chem import MACCSkeys, Mol
 from rdkit.DataStructs.cDataStructs import BitVectToText, CreateFromBitString
+
+from .preprocessing import SkinDoctorPreprocessingPipeline
 
 try:
     # works in python 3.9+
     from importlib.resources import files
 except ImportError:
     from importlib_resources import files
+
+import warnings
+
+# avoid warnings in old versions of numpy
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
 __all__ = ["SkinDoctorCPModel"]
 
@@ -24,34 +33,37 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 cores = 1
 
 # load ml models
+# first note: loading the raw pkl models takes around 10 seconds
+# second note: when gzipping the models, the loading time is around 30 seconds
+# third note: when multiple models are put into one file (and gzipped), the loading
+#             time is around 20 seconds (compared to uncompressed)
 mlm = [
     load(
-        os.path.join(
-            current_dir, "models/skin_doctor_cp/cp_models/clf_" + str(number) + ".pkl"
-        )
+        files("skin_doctor")
+        .joinpath("models/skin_doctor_cp/cp_models")
+        .joinpath(f"clf_{number}.pkl")
+        .open("rb")
     )
     for number in range(100)
 ]
 
+# load alpha values
+# note: this looks slow, but it's actually quite fast
 mlm_alphas = [
     [
         pd.read_csv(
-            os.path.join(
-                current_dir,
-                "models/skin_doctor_cp/cp_alpha_values/alphasCali_"
-                + str(number)
-                + "_0.csv",
-            )
+            files("skin_doctor")
+            .joinpath(f"models/skin_doctor_cp/cp_alpha_values")
+            .joinpath(f"alphasCali_{number}_0.csv")
+            .open("r")
         )
         .squeeze("columns")
         .tolist(),
         pd.read_csv(
-            os.path.join(
-                current_dir,
-                "models/skin_doctor_cp/cp_alpha_values/alphasCali_"
-                + str(number)
-                + "_1.csv",
-            )
+            files("skin_doctor")
+            .joinpath("models/skin_doctor_cp/cp_alpha_values")
+            .joinpath(f"alphasCali_{number}_1.csv")
+            .open("r")
         )
         .squeeze("columns")
         .tolist(),
@@ -271,9 +283,7 @@ def predict(
 
 class SkinDoctorCPModel(AbstractModel):
     def __init__(self):
-        super().__init__(
-            preprocessing_pipeline=SkinDoctorPreprocessingPipeline()
-        )
+        super().__init__(preprocessing_pipeline=SkinDoctorPreprocessingPipeline())
 
     def _predict_mols(
         self,
@@ -289,7 +299,14 @@ class SkinDoctorCPModel(AbstractModel):
             significance_level3,
             significance_level4,
         ]:
-            assert 0 <= sl <= 1
+            assert 0 <= sl <= 1, "Significance levels must be between 0 and 1"
+
+        assert (
+            significance_level1
+            < significance_level2
+            < significance_level3
+            < significance_level4
+        ), "Significance levels must be in increasing order"
 
         return predict(
             mols,

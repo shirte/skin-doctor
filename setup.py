@@ -16,7 +16,7 @@ rdkit_requirement = ["rdkit>=2022.3.3"] if not rdkit_installed else []
 
 setup(
     name="skin-doctor",
-    version="0.1.0",
+    version="0.1.1",
     maintainer="Johannes Kirchmair",
     maintainer_email="johannes.kirchmair@univie.ac.at",
     packages=find_packages(),
@@ -31,11 +31,12 @@ setup(
         "pandas~=1.2.1",
         "numpy==1.19.2",
         "scipy==1.5.2",
-        "nerdd-module>=0.1.10",
+        "nerdd-module>=0.2.0",
         # avoid warnings about numpy.distutils
         "setuptools < 60.0",
-        # install importlib-resources for old Python versions
-        "importlib-resources>=5.12; python_version<'3.10'",
+        # install importlib-resources and importlib-metadata for old Python versions
+        "importlib-resources>=5; python_version<'3.9'",
+        "importlib-metadata>=4.6; python_version<'3.10'",
     ],
     extras_require={
         "dev": [
