@@ -1,6 +1,7 @@
 from typing import List, Tuple
 
-from nerdd_module.preprocessing import Step
+from nerdd_module import Problem
+from nerdd_module.preprocessing import PreprocessingStep
 from rdkit.Chem import AllChem, Mol, MolFromSmarts, MolFromSmiles
 
 __all__ = ["neutralization_reactions", "NeutralizeCharges"]
@@ -31,7 +32,7 @@ neutralization_reactions = [
 ]
 
 
-class NeutralizeCharges(Step):
+class NeutralizeCharges(PreprocessingStep):
     """
     Neutralizes the molecules according to the patterns defined in
     ruleSets.neutralizationPatterns.
@@ -40,7 +41,7 @@ class NeutralizeCharges(Step):
     def __init__(self):
         super().__init__()
 
-    def _run(self, mol: Mol) -> Tuple[Mol, List[str]]:
+    def _preprocess(self, mol: Mol) -> Tuple[Mol, List[Problem]]:
         errors = []
         for reactant, product in neutralization_reactions:
             while mol and mol.HasSubstructMatch(reactant):
@@ -49,7 +50,11 @@ class NeutralizeCharges(Step):
                 try:
                     mol.UpdatePropertyCache()
                     if not mol:
-                        errors.append("N1")
+                        errors.append(
+                            Problem(
+                                "neutralization_failed", "Neutralizing charges failed."
+                            )
+                        )
                 except ValueError:
                     mol = None
 

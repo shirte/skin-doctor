@@ -1,10 +1,11 @@
 from typing import List, Tuple
 
-from nerdd_module.preprocessing import Step
+from nerdd_module import Problem
+from nerdd_module.preprocessing import PreprocessingStep
 from rdkit.Chem import GetMolFrags, Mol, MolToSmiles
 
 
-class StripSalts(Step):
+class StripSalts(PreprocessingStep):
     """
     Removes salts according to the rules defined in DOI: 10.1002/cmdc.201700673
     (Hit Dexter: A Machine-Learning Model for the Prediction of Frequent Hitters)
@@ -14,7 +15,7 @@ class StripSalts(Step):
         super().__init__()
         self.remove_invalid_molecules = remove_invalid_molecules
 
-    def _run(self, mol: Mol) -> Tuple[Mol, List[str]]:
+    def _preprocess(self, mol: Mol) -> Tuple[Mol, List[Problem]]:
         errors = []
 
         mol_frags = GetMolFrags(mol, asMols=True)
@@ -26,9 +27,10 @@ class StripSalts(Step):
         )
         if (
             len(sorted_smiles_split_list) > 1
+            # second largest fragment is at least 70% of the largest fragment:
             and sorted_smiles_split_list[0][1] * 0.7 < sorted_smiles_split_list[1][1]
-            and (
-                not MolToSmiles(sorted_smiles_split_list[0][0], True)
+            and not (
+                MolToSmiles(sorted_smiles_split_list[0][0], True)
                 == MolToSmiles(sorted_smiles_split_list[1][0], True)
             )
         ):
@@ -36,10 +38,24 @@ class StripSalts(Step):
                 result_mol = None
             else:
                 result_mol = mol
-            errors.append("S1")
+            errors.append(
+                Problem(
+                    "largest_fragment_not_unique",
+                    (
+                        "Could not identify the largest fragment, because there are multiple large "
+                        "fragments of similar size."
+                    ),
+                )
+            )
         else:
             if len(sorted_smiles_split_list) > 1:
-                errors.append("S0")
+                errors.append(
+                    Problem(
+                        "largest_fragment_not_unique",
+                        "Could not identify the largest fragment, because there are multiple large "
+                        "fragments of similar size.",
+                    )
+                )
             result_mol = sorted_smiles_split_list[0][0]
 
         return result_mol, errors
