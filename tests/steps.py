@@ -1,7 +1,7 @@
-from pytest_bdd import given, parsers
+from pytest_bdd import given, parsers, when
 
 
-@given("the SkinDoctorCP model", target_fixture="model")
+@given("the SkinDoctorCP model", target_fixture="predictor")
 def skin_doctor_model():
     from skin_doctor import SkinDoctorCPModel
 
@@ -38,3 +38,27 @@ def significance_level3(significance_level3):
 )
 def significance_level4(significance_level4):
     return significance_level4
+
+
+@when(
+    parsers.parse("the model generates predictions for the molecule representations"),
+    target_fixture="predictions",
+)
+def predictions(
+    representations,
+    predictor,
+    input_type,
+    significance_level1,
+    significance_level2,
+    significance_level3,
+    significance_level4,
+):
+    return predictor.predict(
+        representations,
+        input_type=input_type,
+        significance_level1=significance_level1,
+        significance_level2=significance_level2,
+        significance_level3=significance_level3,
+        significance_level4=significance_level4,
+        output_format="record_list",
+    )

@@ -13,10 +13,9 @@ Feature: Valid predictions
     And significance level 4 is <significance_level4>
 
     When the model generates predictions for the molecule representations
-    And The subset of the result where the input was not None is considered
+    And the subset of the result where the input was not None is considered
 
-    Then the result should be a pandas DataFrame
-    And The result should contain the columns:
+    Then The result should contain the columns:
             cp_1
             cp_2
             cp_3
