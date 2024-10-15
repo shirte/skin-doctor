@@ -1,18 +1,16 @@
-import gzip
 import os
-import time
 from copy import deepcopy
 from multiprocessing import Pool
-from typing import List
+from typing import Iterator, List
 
 import numpy as np
 import pandas as pd
 from joblib import load
-from nerdd_module import AbstractModel
+from nerdd_module import SimpleModel
 from rdkit.Chem import MACCSkeys, Mol
 from rdkit.DataStructs.cDataStructs import BitVectToText, CreateFromBitString
 
-from .preprocessing import SkinDoctorPreprocessingPipeline
+from .preprocessing import skin_doctor_cp_preprocessing_steps
 
 try:
     # works in python 3.9+
@@ -240,7 +238,7 @@ def predict(
     significance_level_2: float = 0.10,
     significance_level_3: float = 0.20,
     significance_level_4: float = 0.30,
-):
+) -> Iterator[dict]:
     significance_levels = [
         significance_level_1,
         significance_level_2,
@@ -267,23 +265,23 @@ def predict(
         for i in maccs
     ]
 
-    results = pd.DataFrame(
-        dict(
-            p_nonsens_class=[j[4] for j in cp_results],
-            p_sens_class=[j[5] for j in cp_results],
+    for j in cp_results:
+        cps = {f"cp_{i+1}": j[i] for i in range(4)}
+        significance_errs = {
+            f"significance_err_{i+1}": significance_levels[i] for i in range(4)
+        }
+
+        yield dict(
+            p_nonsens_class=j[4],
+            p_sens_class=j[5],
+            **cps,
+            **significance_errs,
         )
-    )
-
-    for i in range(4):
-        results[f"cp_{i+1}"] = [j[i] for j in cp_results]
-        results[f"significance_err_{i+1}"] = significance_levels[i]
-
-    return results
 
 
-class SkinDoctorCPModel(AbstractModel):
+class SkinDoctorCPModel(SimpleModel):
     def __init__(self):
-        super().__init__(preprocessing_pipeline=SkinDoctorPreprocessingPipeline())
+        super().__init__(preprocessing_steps=skin_doctor_cp_preprocessing_steps)
 
     def _predict_mols(
         self,
@@ -292,7 +290,7 @@ class SkinDoctorCPModel(AbstractModel):
         significance_level2: float = 0.10,
         significance_level3: float = 0.20,
         significance_level4: float = 0.30,
-    ) -> pd.DataFrame:
+    ) -> List[dict]:
         for sl in [
             significance_level1,
             significance_level2,
@@ -308,10 +306,12 @@ class SkinDoctorCPModel(AbstractModel):
             < significance_level4
         ), "Significance levels must be in increasing order"
 
-        return predict(
-            mols,
-            significance_level1,
-            significance_level2,
-            significance_level3,
-            significance_level4,
+        return list(
+            predict(
+                mols,
+                significance_level1,
+                significance_level2,
+                significance_level3,
+                significance_level4,
+            )
         )
