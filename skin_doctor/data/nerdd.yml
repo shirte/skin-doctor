@@ -25,24 +25,38 @@ module:
     Skin Doctor CP has been developed in collaboration with [Beiersdorf
     AG](https://www.beiersdorf.com). The web service is free for non-commercial and
     academic research purposes only.
-  citation: |
-    Wilm, A.; Norinder, U; Agea, M. I.; de Bruyn Kops, C.; Stork, C.; Kühnl, J.;
-    Kirchmair, J. Skin Doctor CP: Conformal prediction of the skin sensitization
-    potential of small organic molecules. Chem. Res. Tox. 2020.<br> 
-    [doi:10.1021/acs.chemrestox.0c00253](https://doi.org/10.1021/acs.chemrestox.0c00253)
+
+  publications:
+    - title: |
+        Skin Doctor CP: Conformal prediction of the skin sensitization
+        potential of small organic molecules
+      authors:
+        - first_name: Anke
+          last_name: Wilm
+          email: wilm@zbh.uni-hamburg.de
+        - first_name: Ulf
+          last_name: Norinder
+        - first_name: M
+          last_name: Agea
+        - first_name: Christina
+          last_name: de Bruyn Kops
+        - first_name: Conrad
+          last_name: Stork
+        - first_name: J
+          last_name: Kühnl
+        - first_name: Johannes
+          last_name: Kirchmair
+          email: johannes.kirchmair@univie.ac.at
+      journal: Chem. Res. Tox.
+      year: 2020
+      doi: 10.1021/acs.chemrestox.0c00253
 
   additional_information: |
     Skin Doctor CP allows the selection of four different error significance levels. For
     each of the selected error significance levels the model will provide predictions
     with a maximum error equal to the error significance level. The default values
     correspond to the four error significance levels used in the Skin Doctor CP
-    publication.
-
-  contact:
-    - name: Anke Wilm
-      email: wilm@zbh.uni-hamburg.de
-    - name: Johannes Kirchmair
-      email: johannes.kirchmair@univie.ac.at
+    publication.      
 
   about: |
     ## About Skin Doctor CP
@@ -117,25 +131,25 @@ module:
 
   job_parameters:
     - name: significance_level1
-      verbose_name: Error significance level 1
+      visible_name: Error significance level 1
       type: float
       default: 0.05
     - name: significance_level2
-      verbose_name: Error significance level 2
+      visible_name: Error significance level 2
       type: float
       default: 0.10
     - name: significance_level3
-      verbose_name: Error significance level 3
+      visible_name: Error significance level 3
       type: float
       default: 0.20
     - name: significance_level4
-      verbose_name: Error significance level 4
+      visible_name: Error significance level 4
       type: float
       default: 0.30
 
   result_properties:
     - name: cp_1
-      verbose_name: Error significance = 0.05
+      visible_name: Error significance = 0.05
       palette: unknownPositiveNegative
       group: Conformal prediction model
       type: integer
@@ -147,7 +161,7 @@ module:
         - value: 1
           label: Sensitizer
     - name: cp_2
-      verbose_name: Error significance = 0.1
+      visible_name: Error significance = 0.1
       palette: unknownPositiveNegative
       group: Conformal prediction model
       type: integer
@@ -159,7 +173,7 @@ module:
         - value: 1
           label: Sensitizer
     - name: cp_3
-      verbose_name: Error significance = 0.2
+      visible_name: Error significance = 0.2
       palette: unknownPositiveNegative
       group: Conformal prediction model
       type: integer
@@ -171,7 +185,7 @@ module:
         - value: 1
           label: Sensitizer
     - name: cp_4
-      verbose_name: Error significance = 0.3
+      visible_name: Error significance = 0.3
       palette: unknownPositiveNegative
       group: Conformal prediction model
       type: integer
@@ -183,12 +197,12 @@ module:
         - value: 1
           label: Sensitizer
     - name: p_nonsens_class
-      verbose_name: P-value non-sensitizing class
+      visible_name: P-value non-sensitizing class
       type: float
       sortable: True
       group: Conformal prediction model
     - name: p_sens_class
-      verbose_name: P-value sensitizing class
+      visible_name: P-value sensitizing class
       type: float
       sortable: True
       group: Conformal prediction model
