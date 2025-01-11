@@ -1,16 +1,18 @@
 import os
 from copy import deepcopy
+from functools import lru_cache
 from multiprocessing import Pool
-from typing import Iterator, List
+from typing import Iterable, List
 
 import numpy as np
 import pandas as pd
 from joblib import load
 from nerdd_module import SimpleModel
+from nerdd_module.config import PackageConfiguration
 from rdkit.Chem import MACCSkeys, Mol
 from rdkit.DataStructs.cDataStructs import BitVectToText, CreateFromBitString
 
-from .preprocessing import skin_doctor_cp_preprocessing_steps
+from .preprocessing import skin_doctor_preprocessing_steps
 
 try:
     # works in python 3.9+
@@ -18,56 +20,83 @@ try:
 except ImportError:
     from importlib_resources import files
 
-import warnings
-
-# avoid warnings in old versions of numpy
-warnings.filterwarnings("ignore", message="numpy.dtype size changed")
-warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
-
 __all__ = ["SkinDoctorCPModel"]
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 cores = 1
+classLabels = ["Non-sensitizer", "Sensitizer"]
 
-# load ml models
-# first note: loading the raw pkl models takes around 10 seconds
-# second note: when gzipping the models, the loading time is around 30 seconds
-# third note: when multiple models are put into one file (and gzipped), the loading
-#             time is around 20 seconds (compared to uncompressed)
-mlm = [
-    load(
-        files("skin_doctor")
-        .joinpath("models/skin_doctor_cp/cp_models")
-        .joinpath(f"clf_{number}.pkl")
-        .open("rb")
-    )
-    for number in range(100)
-]
 
-# load alpha values
-# note: this looks slow, but it's actually quite fast
-mlm_alphas = [
-    [
-        pd.read_csv(
+# this function loads the models and alpha values
+# since this takes a while, we cache the results
+@lru_cache(maxsize=1)
+def get_resources():
+    # load ml models
+    # first note: loading the raw pkl models takes around 10 seconds
+    # second note: when gzipping the models, the loading time is around 30 seconds
+    # third note: when multiple models are put into one file (and gzipped), the loading
+    #             time is around 20 seconds (compared to uncompressed)
+    mlm = [
+        load(
             files("skin_doctor")
-            .joinpath(f"models/skin_doctor_cp/cp_alpha_values")
-            .joinpath(f"alphasCali_{number}_0.csv")
-            .open("r")
+            .joinpath("models/skin_doctor_cp/CPmodels")
+            .joinpath(f"clf_{number}.pkl")
+            .open("rb")
         )
-        .squeeze("columns")
-        .tolist(),
-        pd.read_csv(
-            files("skin_doctor")
-            .joinpath("models/skin_doctor_cp/cp_alpha_values")
-            .joinpath(f"alphasCali_{number}_1.csv")
-            .open("r")
-        )
-        .squeeze("columns")
-        .tolist(),
+        for number in range(100)
     ]
-    for number in range(100)
-]
+
+    # load alpha values
+    # note: this looks slow, but it's actually quite fast
+    mlm_alphas = [
+        [
+            pd.read_csv(
+                files("skin_doctor")
+                .joinpath("models/skin_doctor_cp/CPalphaValues")
+                .joinpath(f"alphasCali_{number}_0.csv")
+                .open("r")
+            )
+            .squeeze("columns")
+            .tolist(),
+            pd.read_csv(
+                files("skin_doctor")
+                .joinpath("models/skin_doctor_cp/CPalphaValues")
+                .joinpath(f"alphasCali_{number}_1.csv")
+                .open("r")
+            )
+            .squeeze("columns")
+            .tolist(),
+        ]
+        for number in range(100)
+    ]
+
+    return mlm, mlm_alphas
+
+
+def get_machine_learning_prediction_rf(model, descriptor):
+    """
+    Method to get the rounded predictions of the models
+
+    :param model: Machine learning model
+    :param descriptor: descriptor
+    :return: rounded predictions of model for morgans
+    """
+    return [round(i, 2) for i in model.predict_proba(descriptor)[:, 1]]
+
+
+def get_machine_learning_prediction_sv(model, descriptor):
+    """
+    Method to get the rounded predictions of the models
+
+    :param model: Machine learning model
+    :param descriptor: descriptor
+    :return: rounded predictions of model for morgans
+    """
+    if descriptor is not None:
+        return round(model.decision_function(descriptor)[0], 2)
+    else:
+        return None
 
 
 def get_maccs_fp(mol):
@@ -80,7 +109,9 @@ def get_maccs_fp(mol):
     return CreateFromBitString(BitVectToText(MACCSkeys.GenMACCSKeys(mol))[1:])
 
 
-def get_cp_results(maccs, CPmodelList, CPalphaList, signis, classLabels, procs):
+def get_cp_results(
+    maccs, CPmodelList, CPalphaList, signi1, signi2, signi3, signi4, classLabels, procs
+):
     """
     Method that produces the results of the conformal prediction model
 
@@ -91,18 +122,19 @@ def get_cp_results(maccs, CPmodelList, CPalphaList, signis, classLabels, procs):
     :param classLabels: List of the Strings for the class labels
     :return: List with the results as strings for the four error significance levels
     """
-    with Pool(procs) as pool:
-        gen = ((CPmodelList[x], CPalphaList[x], maccs, 2) for x in range(100))
-        pValuesAllMap = pool.map_async(inner_loop_mondrian, gen)
-        pValuesAll = pValuesAllMap.get()
-        pValuesMedian = get_median_pValues(pValuesAll)
-        resultsBoolean = [
-            predict_activity_boolean(pValuesMedian, errorSigni) for errorSigni in signis
-        ]
-        resultsString = [
-            predict_activity_string(resultBoolean, n_classes=2, classLabels=classLabels)
-            for resultBoolean in resultsBoolean
-        ]
+    pValuesAll = [
+        inner_loop_mondrian((CPmodelList[x], CPalphaList[x], maccs, 2))
+        for x in range(100)
+    ]
+    pValuesMedian = get_median_pValues(pValuesAll)
+    resultsBoolean = [
+        predict_activity_boolean(pValuesMedian, errorSigni)
+        for errorSigni in [signi1, signi2, signi3, signi4]
+    ]
+    resultsString = [
+        predict_activity_string(resultBoolean, n_classes=2, classLabels=classLabels)
+        for resultBoolean in resultsBoolean
+    ]
     resultsString.append(np.round(pValuesMedian[0][0], 2))
     resultsString.append(np.round(pValuesMedian[0][1], 2))
     return resultsString
@@ -131,22 +163,6 @@ def inner_loop_mondrian(args):
     return pd.DataFrame(pValues)
 
 
-def calculate_alpha_value_multiclass(probas):
-    """
-    Method that calualtes the alpha values of the calibration or test set
-
-    param probas: list with floats, that are the class probabilities returned by the underlying classifier
-    return: list of alpha values
-    """
-    alphaList = []
-    for index, proba in enumerate(probas):
-        probas_copy = list(deepcopy(probas))
-        del probas_copy[index]
-        alpha = 0.5 - ((proba - max(probas_copy)) / 2)
-        alphaList.append(alpha)
-    return alphaList
-
-
 def calculate_p_values_multiclass(alphas_cali, alphas_test):
     """
     Method that calculates the p-values for the test set
@@ -169,27 +185,6 @@ def calculate_p_values_multiclass(alphas_cali, alphas_test):
             ps.append(p)
         p_values.append(ps)
     return p_values
-
-
-def predict_activity_string(predictedActivities, n_classes, classLabels):
-    """
-    Method, that creates a class label for each compound
-
-    param predictedActivities: list, predicted activities as boolean
-    param n_classes: Number of classes the model differntiates
-    param classLabels: List of strings, that are assigned to the different classes
-
-    return: list with class labels the compounds are assigned to as strings
-    """
-    resultsString = []
-    for pred in predictedActivities:
-        if sum(pred) != 1:
-            resultsString.append("Prediction not possible")
-        else:
-            for c in range(n_classes):
-                if pred[c] == True:
-                    resultsString.append(classLabels[c])
-    return resultsString
 
 
 def get_median_pValues(pList):
@@ -232,56 +227,112 @@ def predict_activity_boolean(pValues, errorSignificance):
     return predictedActivities
 
 
+def predict_activity_string(predictedActivities, n_classes, classLabels):
+    """
+    Method, that creates a class label for each compound
+
+    param predictedActivities: list, predicted activities as boolean
+    param n_classes: Number of classes the model differntiates
+    param classLabels: List of strings, that are assigned to the different classes
+
+    return: list with class labels the compounds are assigned to as strings
+    """
+    resultsString = []
+    for pred in predictedActivities:
+        if sum(pred) != 1:
+            resultsString.append("Prediction not possible")
+        else:
+            for c in range(n_classes):
+                if pred[c] == True:
+                    resultsString.append(classLabels[c])
+    return resultsString
+
+
+def calculate_alpha_value_multiclass(probas):
+    """
+    Method that calualtes the alpha values of the calibration or test set
+
+    param probas: list with floats, that are the class probabilities returned by the underlying classifier
+    return: list of alpha values
+    """
+    alphaList = []
+    for index, proba in enumerate(probas):
+        probas_copy = list(deepcopy(probas))
+        del probas_copy[index]
+        alpha = 0.5 - ((proba - max(probas_copy)) / 2)
+        alphaList.append(alpha)
+    return alphaList
+
+
+def translate_cp_result(value):
+    if len(value) == 0:
+        return "No prediction"
+    elif len(value) == 1:
+        return value[0]
+    else:
+        return "Both"
+
+
 def predict(
     mols,
     significance_level_1: float = 0.05,
     significance_level_2: float = 0.10,
     significance_level_3: float = 0.20,
     significance_level_4: float = 0.30,
-) -> Iterator[dict]:
-    significance_levels = [
-        significance_level_1,
-        significance_level_2,
-        significance_level_3,
-        significance_level_4,
-    ]
+):
+    mlm, mlm_alphas = get_resources()
 
-    # calculate features
-    class_labels = ["Non-sensitizer", "Sensitizer"]
+    # Pool for multiprocessing:
+    with Pool(cores) as pool:
+        # Prepare molecule and descriptors
+        maccss = pool.map(get_maccs_fp, mols)
 
-    # prepare descriptors
-    maccs = [get_maccs_fp(mol) for mol in mols]
-
-    # skin doctor CP
-    cp_results = [
+    cpResults = [
         get_cp_results(
-            [i],
+            [maccs],
             mlm,
             mlm_alphas,
-            significance_levels,
-            class_labels,
+            significance_level_1,
+            significance_level_2,
+            significance_level_3,
+            significance_level_4,
+            classLabels,
             cores,
         )
-        for i in maccs
+        for maccs in maccss
     ]
+    cpResultFrame = pd.DataFrame(cpResults)
+    cpResult1, cpResult2, cpResult3, cpResult4, pNonSens, pSens = (
+        cpResultFrame[0].tolist(),
+        cpResultFrame[1].tolist(),
+        cpResultFrame[2].tolist(),
+        cpResultFrame[3].tolist(),
+        cpResultFrame[4].tolist(),
+        cpResultFrame[5].tolist(),
+    )
 
-    for j in cp_results:
-        cps = {f"cp_{i+1}": j[i] for i in range(4)}
-        significance_errs = {
-            f"significance_err_{i+1}": significance_levels[i] for i in range(4)
+    # return results
+    for (
+        cp_result_1,
+        cp_result_2,
+        cp_result_3,
+        cp_result_4,
+        p_non_sens,
+        p_sens,
+    ) in zip(cpResult1, cpResult2, cpResult3, cpResult4, pNonSens, pSens):
+        yield {
+            "cp_1": translate_cp_result(cp_result_1),
+            "cp_2": translate_cp_result(cp_result_2),
+            "cp_3": translate_cp_result(cp_result_3),
+            "cp_4": translate_cp_result(cp_result_4),
+            "p_nonsens_class": p_non_sens,
+            "p_sens_class": p_sens,
         }
-
-        yield dict(
-            p_nonsens_class=j[4],
-            p_sens_class=j[5],
-            **cps,
-            **significance_errs,
-        )
 
 
 class SkinDoctorCPModel(SimpleModel):
     def __init__(self):
-        super().__init__(preprocessing_steps=skin_doctor_cp_preprocessing_steps)
+        super().__init__(preprocessing_steps=skin_doctor_preprocessing_steps)
 
     def _predict_mols(
         self,
@@ -290,7 +341,7 @@ class SkinDoctorCPModel(SimpleModel):
         significance_level2: float = 0.10,
         significance_level3: float = 0.20,
         significance_level4: float = 0.30,
-    ) -> List[dict]:
+    ) -> Iterable[dict]:
         for sl in [
             significance_level1,
             significance_level2,
@@ -306,12 +357,13 @@ class SkinDoctorCPModel(SimpleModel):
             < significance_level4
         ), "Significance levels must be in increasing order"
 
-        return list(
-            predict(
-                mols,
-                significance_level1,
-                significance_level2,
-                significance_level3,
-                significance_level4,
-            )
+        yield from predict(
+            mols,
+            significance_level1,
+            significance_level2,
+            significance_level3,
+            significance_level4,
         )
+
+    def _get_base_config(self):
+        return PackageConfiguration("skin_doctor.data", filename="skin_doctor_cp.yml")

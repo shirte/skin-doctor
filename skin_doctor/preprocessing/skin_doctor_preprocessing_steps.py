@@ -5,9 +5,9 @@ from .do_smiles_roundtrip import DoSmilesRoundtrip
 from .neutralize_charges import NeutralizeCharges
 from .strip_salts import StripSalts
 
-__all__ = ["skin_doctor_cp_preprocessing_steps"]
+__all__ = ["skin_doctor_preprocessing_steps"]
 
-skin_doctor_cp_preprocessing_steps = [
+skin_doctor_preprocessing_steps = [
     DoSmilesRoundtrip(remove_stereo=True),
     StripSalts(),
     NeutralizeCharges(),
