@@ -3,9 +3,9 @@ from pytest_bdd import given, parsers, when
 
 @given("the SkinDoctorCP model", target_fixture="predictor")
 def skin_doctor_model():
-    from skin_doctor import SkinDoctorCPModel
+    from skin_doctor import SkinDoctorIIModel
 
-    return SkinDoctorCPModel()
+    return SkinDoctorIIModel()
 
 
 @given(
@@ -47,7 +47,6 @@ def significance_level4(significance_level4):
 def predictions(
     representations,
     predictor,
-    input_type,
     significance_level1,
     significance_level2,
     significance_level3,
@@ -55,7 +54,6 @@ def predictions(
 ):
     return predictor.predict(
         representations,
-        input_type=input_type,
         significance_level1=significance_level1,
         significance_level2=significance_level2,
         significance_level3=significance_level3,
