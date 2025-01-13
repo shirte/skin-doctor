@@ -16,7 +16,7 @@ rdkit_requirement = ["rdkit>=2022.3.3"] if not rdkit_installed else []
 
 setup(
     name="skin-doctor",
-    version="0.2.1",
+    version="0.2.2",
     maintainer="Johannes Kirchmair",
     maintainer_email="johannes.kirchmair@univie.ac.at",
     packages=find_packages(),
@@ -30,7 +30,6 @@ setup(
         "scikit_learn==0.23.2",
         "pandas~=1.2.1",
         "numpy==1.19.2",
-        "scipy==1.5.2",
         "nerdd-module>=0.3.11",
         # avoid warnings about numpy.distutils
         "setuptools < 60.0",
@@ -51,7 +50,8 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "skindoctorcp=skin_doctor.__main__:main",
+            "skindoctorcp=skin_doctor.__main__:main_skin_doctor_cp",
+            "skindoctorternary=skin_doctor.__main__:main_skin_doctor_ternary",
         ],
     },
 )

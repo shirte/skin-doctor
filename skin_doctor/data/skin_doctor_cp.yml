@@ -1,0 +1,177 @@
+module:
+  rank: 8
+  name: skin_doctor_ii
+  visible_name: Skin Doctor II
+  logo: !image logo.svg
+  logo_title: Skin sensitization
+  logo_caption: Prediction of skin sensitization potential
+  example_smiles: CCOC(=O)N1CCN(CC1)C2=C(C(=O)C2=O)N3CCN(CC3)C4=CC=C(C=C4)OC
+  batch_size: 10
+
+  title: Prediction of skin sensitization potential
+  description: |
+    Skin Doctor CP is a machine learning model for the classification of small organic
+    compounds into skin sensitizers and non-sensitizers. More specifically, the core of
+    Skin Doctor CP is a random forest binary classifier that is enveloped in an
+    aggregated Mondrian conformal prediction framework. This allows users to define an
+    error significance level (i.e. error rate) for classification. Predictions (i.e.
+    sensitizer or non-sensitizer) are thus only reported for compounds for which the
+    expected reliability reaches or exceeds the error rate defined by the user. The
+    error significance level parameters of the framework can be adjusted, as described
+    in the box below.
+
+    Skin Doctor CP is trained on a curated data set of 1285 compounds measured in the
+    local lymph node assay (LLNA).
+
+    Skin Doctor CP has been developed in collaboration with [Beiersdorf
+    AG](https://www.beiersdorf.com). The web service is free for non-commercial and
+    academic research purposes only.
+
+  publications:
+    - title: |
+        Skin Doctor CP: Conformal prediction of the skin sensitization
+        potential of small organic molecules
+      authors:
+        - first_name: Anke
+          last_name: Wilm
+          email: wilm@zbh.uni-hamburg.de
+        - first_name: Ulf
+          last_name: Norinder
+        - first_name: M
+          last_name: Agea
+        - first_name: Christina
+          last_name: de Bruyn Kops
+        - first_name: Conrad
+          last_name: Stork
+        - first_name: J
+          last_name: Kühnl
+        - first_name: Johannes
+          last_name: Kirchmair
+          email: johannes.kirchmair@univie.ac.at
+      journal: Chem. Res. Tox.
+      year: 2020
+      doi: 10.1021/acs.chemrestox.0c00253
+
+  additional_information: |
+    Skin Doctor CP allows the selection of four different error significance levels. For
+    each of the selected error significance levels the model will provide predictions
+    with a maximum error equal to the error significance level. The default values
+    correspond to the four error significance levels used in the Skin Doctor CP
+    publication.
+
+  about: |
+    ## About Skin Doctor CP
+
+    Skin Doctor CP is a machine learning model for the classification of small organic
+    compounds into skin sensitizers and non-sensitizers. More specifically, the core of
+    Skin Doctor CP is a random forest binary classifier that is enveloped in an
+    aggregated Mondrian conformal prediction framework. This allows users to define an
+    error significance level (i.e. error rate) for classification. Predictions (i.e.
+    sensitizer or non-sensitizer) are thus only reported for compounds for which the
+    expected reliability reaches or exceeds the error rate defined by the user.
+
+    Skin Doctor CP is trained on a curated data set of 1285 compounds measured in the
+    local lymph node assay (LLNA). As of October 2020, this curated data set is the
+    largest of its kind.
+
+    ### Further Information
+
+    Details on the methods and performance of the model is provided in accompanying
+    publication (to be published).
+
+    #### How to use the Skin Doctor Suite web service
+
+    Enter SMILES, draw a molecule, or upload a file (.smi or .sdf) containing up to 100k
+    molecules. The .smi file must contain exactly one SMILES per row. If additional
+    information is provided for a molecule, it should be separated from the
+    SMILES notation by a single space character.
+
+    Optionally, select a significance level different from the default value by moving
+    the slide bars to the desired value.
+
+    Click the submit button to start the calculations. You will then be forwarded to the
+    results page.
+
+    #### Output
+
+    The results of the calculations will be displayed as a color-coded table.
+    Additionally, users can download the results as a .csv file or check the results
+    online at a later point in time using the web link provided. Results will be deleted
+    permanently after 60 days or as soon as the user clicks on the “Delete results”
+    button.
+
+    In the “Show/hide columns” section users can select the columns to be displayed in
+    the results table. The results table contains, among others, the columns explained
+    in Table 1. Table 2 explains the possible error and warning codes that may be
+    reported.
+
+    Table 1. Explanation of the most important output columns.
+
+    | Column name          | Description                                                                                                          |
+    |----------------------|----------------------------------------------------------------------------------------------------------------------|
+    | General information: |                                                                                                                      |
+    | Name                 | Unique integer assigned to each submitted molecule                                                                   |
+    | Input SMILES         | SMILES as submitted by the user                                                                                      |
+    | Filtered SMILES      | SMILES after preprocessing                                                                                           |
+    | 2D structure         | 2D structure of the preprocessed molecule                                                                            |
+    | Error significance   | Prediction of Skin Doctor CP with a reliability fulfilling the selected error significance                           |
+    | P-values             | P-values for the sensitizing and the non-sensitizing class                                                           |
+    | Error/Warnings       | Code for any errors or warnings thrown during the preparation of molecular structures. See Table 2 for explanation.  |
+
+
+    Table 2. Errors and Warnings.
+
+    | Code | Error message or warning                                                                                                                                                |
+    |------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | !1   | Invalid or empty input. No output was produced. Further information may be provided by additional messages.                                                             |
+    | S1   | The salt filter identified a multi-component SMILES for which the core component could not be unambiguously&nbsp;determined. The reported prediction may be unreliable. |
+    | S0   | The salt filter has removed at least one component of the input SMILES.                                                                                                 |
+    | E1   | Element types other than those represented in the training data were detected. A result was generated but is probably unreliable.                                       |
+    | C1   | Molecule was found to be broken during the canonicalization procedure. Always thrown in connection with ‘!1’                                                            |
+    | N1   | Molecule was found to be broken during the neutralization procedure. Always thrown in connection with ‘!1’                                                              |
+
+  job_parameters:
+    - name: significance_level1
+      visible_name: Error significance level 1
+      type: float
+      default: 0.05
+    - name: significance_level2
+      visible_name: Error significance level 2
+      type: float
+      default: 0.10
+    - name: significance_level3
+      visible_name: Error significance level 3
+      type: float
+      default: 0.20
+    - name: significance_level4
+      visible_name: Error significance level 4
+      type: float
+      default: 0.30
+
+  result_properties:
+    - name: cp_1
+      visible_name: Error significance = 0.05
+      group: Conformal prediction model
+      type: string
+    - name: cp_2
+      visible_name: Error significance = 0.1
+      group: Conformal prediction model
+      type: string
+    - name: cp_3
+      visible_name: Error significance = 0.2
+      group: Conformal prediction model
+      type: string
+    - name: cp_4
+      visible_name: Error significance = 0.3
+      group: Conformal prediction model
+      type: string
+    - name: p_nonsens_class
+      visible_name: P-value non-sensitizing class
+      type: float
+      sortable: True
+      group: Conformal prediction model
+    - name: p_sens_class
+      visible_name: P-value sensitizing class
+      type: float
+      sortable: True
+      group: Conformal prediction model

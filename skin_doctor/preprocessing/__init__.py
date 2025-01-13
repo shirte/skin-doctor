@@ -1,1 +1,1 @@
-from .skin_doctor_cp_preprocessing_steps import *
+from .skin_doctor_preprocessing_steps import *

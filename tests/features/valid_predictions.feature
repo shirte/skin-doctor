@@ -3,9 +3,8 @@ Feature: Valid predictions
 
   Scenario Outline: Predictions are valid
     Given a random seed set to <seed>
-    And the input type is '<input_type>'
     And a list of <num_molecules> random molecules, where <num_none> entries are None
-    And the representations of the molecules
+    And the representations of the molecules in <input_type> format
     And the SkinDoctorCP model
     And significance level 1 is <significance_level1>
     And significance level 2 is <significance_level2>
