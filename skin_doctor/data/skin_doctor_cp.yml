@@ -1,7 +1,7 @@
 module:
   rank: 8
-  name: skin_doctor_ii
-  visible_name: Skin Doctor II
+  name: skin_doctor_cp
+  visible_name: Skin Doctor CP
   logo: !image logo.svg
   logo_title: Skin sensitization
   logo_caption: Prediction of skin sensitization potential
