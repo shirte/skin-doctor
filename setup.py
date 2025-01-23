@@ -1,19 +1,5 @@
 from setuptools import find_packages, setup
 
-# some RDKit versions are not recognized by setuptools
-# -> check if RDKit is installed by attempting to import it
-# -> if RDKit can be imported, do not add it to install_requires
-rdkit_installed = False
-try:
-    import rdkit
-
-    rdkit_installed = True
-except ModuleNotFoundError:
-    pass
-
-# rdkit 2022.3.3 is the oldest (reasonable) version
-rdkit_requirement = ["rdkit>=2022.3.3"] if not rdkit_installed else []
-
 setup(
     name="skin-doctor",
     version="0.2.2",
@@ -25,8 +11,8 @@ setup(
     long_description_content_type="text/markdown",
     license="BSD 3-Clause License",
     include_package_data=True,
-    install_requires=rdkit_requirement
-    + [
+    install_requires=[
+        "rdkit==2020.09.1",
         "scikit_learn==0.23.2",
         "pandas~=1.2.1",
         "numpy==1.19.2",
