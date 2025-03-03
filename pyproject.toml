@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skin-doctor"
+version = "0.2.2"
+description = ""
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Anke Wilm" },
+    { name = "Axinya Tokareva" },
+    { name = "Steffen Hirte", email = "steffen.hirte@univie.ac.at" },
+]
+maintainers = [
+    { name = "Johannes Kirchmair", email = "johannes.kirchmair@univie.ac.at" },
+]
+requires-python = ">=3.6"
+dependencies = [
+    "rdkit==2020.09.1",
+    "scikit_learn==0.23.2",
+    "pandas~=1.2.1",
+    "numpy==1.19.2",
+    "nerdd-module>=0.3.11",
+    "setuptools < 60.0",
+    "importlib-resources>=5; python_version<'3.9'",
+    "importlib-metadata>=4.6; python_version<'3.10'",
+]
+
+[project.urls]
+Repository = "https://github.com/molinfo-vienna/skin-doctor"
+
+[project.optional-dependencies]
+dev = ["mypy", "ruff"]
+test = [
+    "pytest",
+    "pytest-watch",
+    "pytest-cov",
+    "pytest-bdd",
+    "hypothesis",
+    "hypothesis-rdkit",
+]
+
+[project.scripts]
+skindoctorcp = "skin_doctor.__main__:main_skin_doctor_cp"
+skindoctorternary = "skin_doctor.__main__:main_skin_doctor_ternary"
