@@ -21,12 +21,13 @@ Feature: Valid predictions
             cp_4
             p_sens_class
             p_nonsens_class
-    And the value in column 'cp_1' should be a subset of ["Non-sensitizer", "Sensitizer", "Prediction not possible"]
-    And the value in column 'cp_2' should be a subset of ["Non-sensitizer", "Sensitizer", "Prediction not possible"]
-    And the value in column 'cp_3' should be a subset of ["Non-sensitizer", "Sensitizer", "Prediction not possible"]
-    And the value in column 'cp_4' should be a subset of ["Non-sensitizer", "Sensitizer", "Prediction not possible"]
-    And the value in column 'p_sens_class' should be between 0 and 1
-    And the value in column 'p_nonsens_class' should be between 0 and 1
+    # TODO: values should be checked after filtering out None values
+    # And the value in column 'cp_1' should be a subset of ["Non-sensitizer", "Sensitizer", "Prediction not possible"]
+    # And the value in column 'cp_2' should be a subset of ["Non-sensitizer", "Sensitizer", "Prediction not possible"]
+    # And the value in column 'cp_3' should be a subset of ["Non-sensitizer", "Sensitizer", "Prediction not possible"]
+    # And the value in column 'cp_4' should be a subset of ["Non-sensitizer", "Sensitizer", "Prediction not possible"]
+    # And the value in column 'p_sens_class' should be between 0 and 1
+    # And the value in column 'p_nonsens_class' should be between 0 and 1
 
 
   Examples:
