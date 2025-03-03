@@ -38,13 +38,13 @@ module:
           email: wilm@zbh.uni-hamburg.de
         - first_name: Ulf
           last_name: Norinder
-        - first_name: M
+        - first_name: Maria Isabel
           last_name: Agea
         - first_name: Christina
           last_name: de Bruyn Kops
         - first_name: Conrad
           last_name: Stork
-        - first_name: J
+        - first_name: Jochen
           last_name: Kühnl
         - first_name: Johannes
           last_name: Kirchmair
@@ -154,55 +154,151 @@ module:
       type: string
       visible_name: Error significance level 1
       group: Conformal prediction model
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: cp_2
       type: string
       visible_name: Error significance level 2
       group: Conformal prediction model
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: cp_3
       type: string
       visible_name: Error significance level 3
       group: Conformal prediction model
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: cp_4
       type: string
       visible_name: Error significance level 4
       group: Conformal prediction model
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: p_nonsens_class
       visible_name: P-value non-sensitizing class
       type: float
       sortable: True
       group: Details conformal prediction model
+      color_palette:
+        type: sequential
+        domain:
+          - 0
+          - 1
+        range:
+          - neutral
+          - positive
     - name: p_sens_class
       visible_name: P-value sensitizing class
       type: float
       sortable: True
       group: Details conformal prediction model
+      color_palette:
+        type: sequential
+        domain:
+          - 0
+          - 1
+        range:
+          - neutral
+          - positive
     - name: p_weaksens_class
       visible_name: P-value weak to moderate sensitizing class
       type: float
       sortable: True
       group: Details conformal prediction model
+      color_palette:
+        type: sequential
+        domain:
+          - 0
+          - 1
+        range:
+          - neutral
+          - positive
     - name: p_strongsens_class
       visible_name: P-value strong to extreme sensitizing class
       type: float
       sortable: True
       group: Details conformal prediction model
+      color_palette:
+        type: sequential
+        domain:
+          - 0
+          - 1
+        range:
+          - neutral
+          - positive
     - name: prediction
       visible_name: Prediction
       type: string
       sortable: True
       group: Model to differentiate non-sensitizers from sensitizers
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: confidence
       visible_name: Confidence
       type: float
       sortable: True
       group: Model to differentiate non-sensitizers from sensitizers
+      color_palette:
+        type: sequential
+        domain:
+          - 0
+          - 1
+        range:
+          - neutral
+          - positive
     - name: prediction_ternary
       visible_name: Prediction
       type: string
       sortable: True
       group: Model to differentiate weak to moderate sensitizers from strong to extreme sensitizers
+      color_palette:
+        type: categorical
+        domain:
+          - Weak to moderate sensitizer
+          - Strong to extreme sensitizer
+        range:
+          - positive
+          - negative
     - name: confidence_ternary
       visible_name: Confidence
       type: float
       sortable: True
       group: Model to differentiate weak to moderate sensitizers from strong to extreme sensitizers
+      color_palette:
+        type: sequential
+        domain:
+          - 0
+          - 1
+        range:
+          - neutral
+          - positive
