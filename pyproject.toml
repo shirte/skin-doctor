@@ -45,3 +45,8 @@ test = [
 [project.scripts]
 skindoctorcp = "skin_doctor.__main__:main_skin_doctor_cp"
 skindoctorternary = "skin_doctor.__main__:main_skin_doctor_ternary"
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+branch = "main"
+upload_to_vcs_release = true
