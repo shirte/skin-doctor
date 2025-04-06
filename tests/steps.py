@@ -3,9 +3,9 @@ from pytest_bdd import given, parsers, when
 
 @given("the SkinDoctorCP model", target_fixture="predictor")
 def skin_doctor_model():
-    from skin_doctor import SkinDoctorIIModel
+    from skin_doctor import SkinDoctorCPModel
 
-    return SkinDoctorIIModel()
+    return SkinDoctorCPModel()
 
 
 @given(
