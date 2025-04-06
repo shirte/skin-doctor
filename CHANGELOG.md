@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.0.2 (2025-04-06)
+
+### Fixes
+
+* fix: Build docker images correctly ([`bccb8d2`](https://github.com/molinfo-vienna/skin-doctor/commit/bccb8d2e5ea0ab5d388168964c588aed30762c26))
+
+### Unknown
+
+* Merge pull request #14 from shirte/main
+
+fix: Build docker images correctly ([`ce34193`](https://github.com/molinfo-vienna/skin-doctor/commit/ce3419362a3ca426fee2d07a570eaad409af32d0))
+
+
 ## v0.0.1 (2025-04-06)
 
 ### Fixes
