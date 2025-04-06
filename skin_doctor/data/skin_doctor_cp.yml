@@ -37,13 +37,13 @@ module:
           email: wilm@zbh.uni-hamburg.de
         - first_name: Ulf
           last_name: Norinder
-        - first_name: M
+        - first_name: Maria Isabel
           last_name: Agea
         - first_name: Christina
           last_name: de Bruyn Kops
         - first_name: Conrad
           last_name: Stork
-        - first_name: J
+        - first_name: Jochen
           last_name: Kühnl
         - first_name: Johannes
           last_name: Kirchmair
@@ -153,25 +153,73 @@ module:
       visible_name: Error significance = 0.05
       group: Conformal prediction model
       type: string
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: cp_2
       visible_name: Error significance = 0.1
       group: Conformal prediction model
       type: string
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: cp_3
       visible_name: Error significance = 0.2
       group: Conformal prediction model
       type: string
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: cp_4
       visible_name: Error significance = 0.3
       group: Conformal prediction model
       type: string
+      color_palette:
+        type: categorical
+        domain:
+          - Non-sensitizer
+          - Sensitizer
+        range:
+          - positive
+          - negative
     - name: p_nonsens_class
       visible_name: P-value non-sensitizing class
       type: float
       sortable: True
       group: Conformal prediction model
+      color_palette:
+        type: sequential
+        domain:
+          - 0
+          - 1
+        range:
+          - neutral
+          - positive
     - name: p_sens_class
       visible_name: P-value sensitizing class
       type: float
       sortable: True
       group: Conformal prediction model
+      color_palette:
+        type: sequential
+        domain:
+          - 0
+          - 1
+        range:
+          - neutral
+          - positive
