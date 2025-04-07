@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.0.3 (2025-04-07)
+
+### Fixes
+
+* fix: Free disk space before building docker images ([`7153f1b`](https://github.com/molinfo-vienna/skin-doctor/commit/7153f1be5cfcea5306c8da0d20e0fcabb6b4b9a6))
+
+### Unknown
+
+* Merge pull request #15 from shirte/main
+
+fix: Free disk space before building docker images ([`e62518d`](https://github.com/molinfo-vienna/skin-doctor/commit/e62518d5360bc05acc7480e92d3ac5a8316066dd))
+
+
 ## v0.0.2 (2025-04-06)
 
 ### Fixes
