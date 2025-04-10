@@ -45,6 +45,11 @@ test = [
 skindoctorcp = "skin_doctor.__main__:main_skin_doctor_cp"
 skindoctorternary = "skin_doctor.__main__:main_skin_doctor_ternary"
 
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+addopts = "-x --cov-report=xml --cov-report=term --cov=skin_doctor"
+
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
 branch = "main"
