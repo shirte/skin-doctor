@@ -34,7 +34,7 @@ Repository = "https://github.com/molinfo-vienna/skin-doctor"
 dev = ["mypy", "ruff"]
 test = [
     "pytest",
-    "pytest-watch",
+    "pytest-watcher",
     "pytest-cov",
     "pytest-bdd==7.3.0",
     "hypothesis",
@@ -49,6 +49,9 @@ skindoctorternary = "skin_doctor.__main__:main_skin_doctor_ternary"
 log_cli = true
 log_cli_level = "INFO"
 addopts = "-x --cov-report=xml --cov-report=term --cov=skin_doctor"
+
+[tool.pytest-watcher]
+ext = ["py", "feature"]
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
