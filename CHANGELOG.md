@@ -1,6 +1,33 @@
 # CHANGELOG
 
 
+## v0.0.4 (2025-05-24)
+
+### Code Style
+
+* style: Use pytest-watcher instead of pytest-watch ([`10ec18f`](https://github.com/molinfo-vienna/skin-doctor/commit/10ec18fbb1c94efba48b6a5dbf1d0c4373cf63cb))
+
+### Documentation
+
+* docs: Add installation instructions ([`a1037fa`](https://github.com/molinfo-vienna/skin-doctor/commit/a1037fa8011ca07d48503283a9b42d668b9fba99))
+
+### Fixes
+
+* fix: Use distroless base image ([`9c32407`](https://github.com/molinfo-vienna/skin-doctor/commit/9c3240791658c9e3580327b8f9321e7421145abd))
+
+* fix: Move pytest config to pyproject.toml ([`34422d2`](https://github.com/molinfo-vienna/skin-doctor/commit/34422d240163f6a12ceaf74b5c4f2d5d21876419))
+
+* fix: Update setuptools dependency ([`19daaf8`](https://github.com/molinfo-vienna/skin-doctor/commit/19daaf8e672451b841d17c94e545e1892769ac1e))
+
+* fix: Use skindoctor commands as entrypoints of Docker files ([`edc2357`](https://github.com/molinfo-vienna/skin-doctor/commit/edc2357b9ac0067d5a122c69ae90938dd9b29120))
+
+### Unknown
+
+* Merge pull request #16 from shirte/main
+
+Use skindoctor commands as entrypoint of docker files ([`1bc586e`](https://github.com/molinfo-vienna/skin-doctor/commit/1bc586eebfefa7493227da4a7b4a972066fd6750))
+
+
 ## v0.0.3 (2025-04-07)
 
 ### Fixes
