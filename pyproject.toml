@@ -23,7 +23,6 @@ dependencies = [
     "pandas~=1.2.1",
     "numpy==1.19.2",
     "nerdd-module>=0.3.11",
-    "setuptools < 60.0",
     "importlib-resources>=5; python_version<'3.9'",
     "importlib-metadata>=4.6; python_version<'3.10'",
 ]
@@ -35,7 +34,7 @@ Repository = "https://github.com/molinfo-vienna/skin-doctor"
 dev = ["mypy", "ruff"]
 test = [
     "pytest",
-    "pytest-watch",
+    "pytest-watcher",
     "pytest-cov",
     "pytest-bdd==7.3.0",
     "hypothesis",
@@ -45,6 +44,14 @@ test = [
 [project.scripts]
 skindoctorcp = "skin_doctor.__main__:main_skin_doctor_cp"
 skindoctorternary = "skin_doctor.__main__:main_skin_doctor_ternary"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+addopts = "-x --cov-report=xml --cov-report=term --cov=skin_doctor"
+
+[tool.pytest-watcher]
+ext = ["py", "feature"]
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
