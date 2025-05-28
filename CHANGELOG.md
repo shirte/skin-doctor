@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.0.5 (2025-05-28)
+
+### Fixes
+
+* fix: arm64 compatibility ([`bd488a4`](https://github.com/molinfo-vienna/skin-doctor/commit/bd488a4a0c941f74fe1bc81200ff3bf557df515c))
+
+### Unknown
+
+* Merge pull request #17 from molinfo-vienna/arm64
+
+fix: arm64 compatibility ([`7d6cdd6`](https://github.com/molinfo-vienna/skin-doctor/commit/7d6cdd6c4d129e385d96e35d8364df90940320c2))
+
+
 ## v0.0.4 (2025-05-24)
 
 ### Code Style
