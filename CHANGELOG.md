@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.0.6 (2025-07-01)
+
+### Fixes
+
+* fix: Bump versions of dependencies ([`a04ee50`](https://github.com/molinfo-vienna/skin-doctor/commit/a04ee505c2064023a7a064647ced7e8388e48dd3))
+
+### Unknown
+
+* Merge pull request #18 from shirte/main
+
+fix: Bump versions of dependencies ([`5a55881`](https://github.com/molinfo-vienna/skin-doctor/commit/5a55881fb687e81dfc6adb1df8edd64c5da3fcb3))
+
+
 ## v0.0.5 (2025-05-28)
 
 ### Fixes
