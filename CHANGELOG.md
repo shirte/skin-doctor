@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.0.7 (2025-07-01)
+
+### Fixes
+
+* fix: Remove arm64 platform, because build fails ([`4e26c50`](https://github.com/molinfo-vienna/skin-doctor/commit/4e26c508e4c31f90a52c6b78bb610341fffca625))
+
+### Unknown
+
+* Merge pull request #19 from shirte/main
+
+fix: Remove arm64 platform, because build fails ([`9dcfa43`](https://github.com/molinfo-vienna/skin-doctor/commit/9dcfa43a93ba1507045205409a0fa2feb4e7af73))
+
+
 ## v0.0.6 (2025-07-01)
 
 ### Fixes
