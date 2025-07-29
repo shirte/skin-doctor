@@ -7,7 +7,7 @@ from typing import Iterable, List
 import numpy as np
 import pandas as pd
 from joblib import load
-from nerdd_module import SimpleModel
+from nerdd_module import Model
 from nerdd_module.config import PackageConfiguration
 from rdkit.Chem import MACCSkeys, Mol
 from rdkit.DataStructs.cDataStructs import BitVectToText, CreateFromBitString
@@ -522,7 +522,7 @@ def predict(
         }
 
 
-class SkinDoctorTernaryModel(SimpleModel):
+class SkinDoctorTernaryModel(Model):
     def __init__(self):
         super().__init__(preprocessing_steps=skin_doctor_preprocessing_steps)
 
