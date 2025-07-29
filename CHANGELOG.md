@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.0.8 (2025-07-29)
+
+### Fixes
+
+* fix: Derive from Model class ([`39b29cb`](https://github.com/molinfo-vienna/skin-doctor/commit/39b29cb39e1340a8f203c0e9cadf2968c17bf3c3))
+
+* fix: Bump dependencies ([`8739082`](https://github.com/molinfo-vienna/skin-doctor/commit/87390828e112167120f83fc94e83ef6921173bd9))
+
+### Unknown
+
+* Merge pull request #20 from shirte/main
+
+Adapt to nerdd-module 0.3.39 ([`6d5e7e1`](https://github.com/molinfo-vienna/skin-doctor/commit/6d5e7e118a0a303ba4aef8803d09d2d694734924))
+
+
 ## v0.0.7 (2025-07-01)
 
 ### Fixes
