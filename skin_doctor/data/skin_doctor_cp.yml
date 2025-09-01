@@ -150,7 +150,7 @@ module:
 
   result_properties:
     - name: cp_1
-      visible_name: Error significance = 0.05
+      visible_name: Error significance level 1
       group: Conformal prediction model
       type: string
       color_palette:
@@ -162,7 +162,7 @@ module:
           - positive
           - negative
     - name: cp_2
-      visible_name: Error significance = 0.1
+      visible_name: Error significance level 2
       group: Conformal prediction model
       type: string
       color_palette:
@@ -174,7 +174,7 @@ module:
           - positive
           - negative
     - name: cp_3
-      visible_name: Error significance = 0.2
+      visible_name: Error significance level 3
       group: Conformal prediction model
       type: string
       color_palette:
@@ -186,7 +186,7 @@ module:
           - positive
           - negative
     - name: cp_4
-      visible_name: Error significance = 0.3
+      visible_name: Error significance level 4
       group: Conformal prediction model
       type: string
       color_palette:
