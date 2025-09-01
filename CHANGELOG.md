@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v0.0.9 (2025-09-01)
+
+### Fixes
+
+* fix: Update result property names ([`b7b50be`](https://github.com/molinfo-vienna/skin-doctor/commit/b7b50be2862f47559a37216e0871b1207d42474b))
+
+* fix: Use curl in docker images ([`29f6b75`](https://github.com/molinfo-vienna/skin-doctor/commit/29f6b75aad6c8482bf9200db35720ce2f3476be5))
+
+* fix: Use curl in installation instructions ([`a9d96c9`](https://github.com/molinfo-vienna/skin-doctor/commit/a9d96c989fb09ccbc84c2832054de2316dd599bd))
+
+### Unknown
+
+* Merge pull request #21 from shirte/main
+
+Use curl in docker images ([`8a26657`](https://github.com/molinfo-vienna/skin-doctor/commit/8a2665784bd468ac0dacb41a34f93978833535c6))
+
+
 ## v0.0.8 (2025-07-29)
 
 ### Fixes
