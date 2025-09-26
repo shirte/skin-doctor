@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.0.10 (2025-09-26)
+
+### Fixes
+
+* fix: Use curl instead of wget in github actions ([`07fed4e`](https://github.com/molinfo-vienna/skin-doctor/commit/07fed4e9cd4621505da92db937aba8e2335e8f68))
+
+* fix: Update dependencies ([`a40d517`](https://github.com/molinfo-vienna/skin-doctor/commit/a40d5177c791b58afe08578171c2bcc9f8231b97))
+
+### Unknown
+
+* Merge pull request #22 from shirte/main
+
+Update dependencies ([`166d5d3`](https://github.com/molinfo-vienna/skin-doctor/commit/166d5d336549fc5a07a070f91f0bb33b089a1736))
+
+
 ## v0.0.9 (2025-09-01)
 
 ### Fixes
