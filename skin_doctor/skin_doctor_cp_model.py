@@ -1,7 +1,7 @@
 import os
+from concurrent.futures import ProcessPoolExecutor
 from copy import deepcopy
 from functools import lru_cache
-from multiprocessing import Pool
 from typing import Iterable, List
 
 import numpy as np
@@ -282,10 +282,10 @@ def predict(
 ):
     mlm, mlm_alphas = get_resources()
 
-    # Pool for multiprocessing:
-    with Pool(cores) as pool:
+    # avoid multiprocessing.Pool, because it does not handle SIGTERM properly
+    with ProcessPoolExecutor(cores) as pool:
         # Prepare molecule and descriptors
-        maccss = pool.map(get_maccs_fp, mols)
+        maccss = list(pool.map(get_maccs_fp, mols))
 
     cpResults = [
         get_cp_results(
