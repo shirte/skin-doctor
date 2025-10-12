@@ -1,7 +1,7 @@
 import os
+from concurrent.futures import ProcessPoolExecutor
 from copy import deepcopy
 from functools import lru_cache
-from multiprocessing import Pool
 from typing import Iterable, List
 
 import numpy as np
@@ -387,9 +387,9 @@ def predict(
     mlm_cp, mlm_alphas_cp, mlm_ternary, mlm_alphas_ternary = get_resources()
 
     # Pool for multiprocessing:
-    with Pool(cores) as pool:
+    with ProcessPoolExecutor(cores) as pool:
         # Prepare molecule and descriptors
-        maccss = pool.map(get_maccs_fp, mols)
+        maccss = list(pool.map(get_maccs_fp, mols))
         # Skin Doctor CP
         cpResults = [
             get_cp_results(
