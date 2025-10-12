@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.0.11 (2025-10-12)
+
+### Fixes
+
+* fix: Use ProcessPoolExecutor instead of multiprocessing.Pool ([`7c58f04`](https://github.com/molinfo-vienna/skin-doctor/commit/7c58f0472d7740a735eed860cb9e68baa57011d6))
+
+* fix: Update dependencies ([`e1cfea6`](https://github.com/molinfo-vienna/skin-doctor/commit/e1cfea65875e3617cca7ff2360cc63475c5393a3))
+
+### Unknown
+
+* Merge pull request #23 from shirte/main
+
+Update dependencies ([`70fa45c`](https://github.com/molinfo-vienna/skin-doctor/commit/70fa45c9c581f36bebec51c611d64d4392bb8832))
+
+
 ## v0.0.10 (2025-09-26)
 
 ### Fixes
