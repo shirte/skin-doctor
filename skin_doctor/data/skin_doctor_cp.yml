@@ -28,29 +28,7 @@ module:
     academic research purposes only.
 
   publications:
-    - title: |
-        Skin Doctor CP: Conformal prediction of the skin sensitization
-        potential of small organic molecules
-      authors:
-        - first_name: Anke
-          last_name: Wilm
-          email: wilm@zbh.uni-hamburg.de
-        - first_name: Ulf
-          last_name: Norinder
-        - first_name: Maria Isabel
-          last_name: Agea
-        - first_name: Christina
-          last_name: de Bruyn Kops
-        - first_name: Conrad
-          last_name: Stork
-        - first_name: Jochen
-          last_name: Kühnl
-        - first_name: Johannes
-          last_name: Kirchmair
-          email: johannes.kirchmair@univie.ac.at
-      journal: Chem. Res. Tox.
-      year: 2020
-      doi: 10.1021/acs.chemrestox.0c00253
+    - doi: 10.1021/acs.chemrestox.0c00253
 
   additional_information: |
     Skin Doctor CP allows the selection of four different error significance levels. For
