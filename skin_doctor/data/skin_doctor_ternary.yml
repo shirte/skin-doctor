@@ -11,9 +11,9 @@ module:
 
   title: Prediction of skin sensitization potential
   description: |
-    Skin Doctor CP is a machine learning model for the classification of small organic
+    Skin Doctor Ternary is a machine learning model for the classification of small organic
     compounds into skin sensitizers and non-sensitizers. More specifically, the core of
-    Skin Doctor CP is a random forest binary classifier that is enveloped in an
+    Skin Doctor Ternary is a random forest binary classifier that is enveloped in an
     aggregated Mondrian conformal prediction framework. This allows users to define an
     error significance level (i.e. error rate) for classification. Predictions (i.e.
     sensitizer or non-sensitizer) are thus only reported for compounds for which the
@@ -21,10 +21,10 @@ module:
     error significance level parameters of the framework can be adjusted, as described
     in the box below.
 
-    Skin Doctor CP is trained on a curated data set of 1285 compounds measured in the
+    Skin Doctor Ternary is trained on a curated data set of 1285 compounds measured in the
     local lymph node assay (LLNA).
 
-    Skin Doctor CP has been developed in collaboration with [Beiersdorf
+    Skin Doctor Ternary has been developed in collaboration with [Beiersdorf
     AG](https://www.beiersdorf.com). The web service is free for non-commercial and
     academic research purposes only.
 
