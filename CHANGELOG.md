@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v0.0.12 (2026-01-29)
+
+### Fixes
+
+* fix: Provide only DOI for publication ([`f806e36`](https://github.com/molinfo-vienna/skin-doctor/commit/f806e36d8128881ecb79ae28eb32991990c02b0c))
+
+* fix: Use correct name in Skin Doctor Ternary ([`51c5b55`](https://github.com/molinfo-vienna/skin-doctor/commit/51c5b55d5c4cc3672f306d61281aa4e3e0050df1))
+
+* fix: Update nerdd-link ([`ca24270`](https://github.com/molinfo-vienna/skin-doctor/commit/ca24270b04595ff9c3698f177a516f5437fc4ec7))
+
+### Unknown
+
+* Merge pull request #24 from shirte/main
+
+Update nerdd dependencies ([`b836f50`](https://github.com/molinfo-vienna/skin-doctor/commit/b836f50e588124e7958a9ba9e1799f3d0f853ccb))
+
+
 ## v0.0.11 (2025-10-12)
 
 ### Fixes
